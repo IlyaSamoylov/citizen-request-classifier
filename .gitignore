@@ -225,3 +225,10 @@ __marimo__/
 
 # IDE
 .idea/
+
+# ненужные файлы проекта
+.python-version
+datasets/
+main.py
+uv.lock
+Тестовое задание - Классификация.md
