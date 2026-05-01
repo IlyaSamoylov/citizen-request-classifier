@@ -7,8 +7,14 @@ class Settings(BaseSettings):
 	APP_NAME: str = "request-classifier"
 	APP_ENV: str = "local"
 	APP_HOST: str = "0.0.0.0"
-	APP_PORT: str = "8000"
+	APP_PORT: int = 8000
 	LOG_LEVEL: str = "INFO"
+
+	DB_USER: str
+	DB_PASSWORD: str
+	DB_HOST: str = "db"
+	DB_PORT: int = 5432
+	DB_NAME: str = "app_db"
 
 	CLASSIFIER_MODEL_PATH: str ="./artifacts/classifier.pkl"
 	CLASSIFIER_THRESHOLD: float = 0.60
@@ -19,6 +25,10 @@ class Settings(BaseSettings):
 	LLM_TIMEOUT_SECONDS: int = 30
 	LLM_MAX_RETRIES: int = 2
 
-	# TODO: собирать и возвращать url подключения к базе здесь через @property или использовать sqlalchemy.engine import URL?
+	@property
+	def DATABASE_URL(self) -> str:
+		return (f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}"
+		        f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}")
+
 
 settings = Settings()
