@@ -229,8 +229,7 @@ __marimo__/
 # ненужные файлы проекта
 .python-version
 datasets/
-main.py
-uv.lock
+
 Тестовое задание - Классификация.md
 
 .env
