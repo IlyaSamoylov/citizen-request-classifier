@@ -17,6 +17,8 @@ class Settings(BaseSettings):
 	DB_PORT: int = 5432
 	DB_NAME: str = "app_db"
 
+	CATEGORIES_FILE: str = "app/core/categories.yaml"
+
 	CLASSIFIER_MODEL_PATH: str ="./artifacts/classifier.pkl"
 	CLASSIFIER_THRESHOLD: float = 0.60
 	CLASSIFIER_MARGIN_THRESHOLD: float = 0.15
