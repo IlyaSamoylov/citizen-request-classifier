@@ -9,6 +9,7 @@ class Settings(BaseSettings):
 	APP_HOST: str = "0.0.0.0"
 	APP_PORT: int = 8000
 	LOG_LEVEL: str = "INFO"
+	APP_DEBUG: bool = True
 
 	DB_USER: str
 	DB_PASSWORD: str
@@ -26,8 +27,8 @@ class Settings(BaseSettings):
 	LLM_MAX_RETRIES: int = 2
 
 	@property
-	def DATABASE_URL(self) -> str:
-		return (f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}"
+	def get_db_url(self) -> str:
+		return (f"postgresql+psycopg2://{self.DB_USER}:{self.DB_PASSWORD}"
 		        f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}")
 
 
