@@ -25,7 +25,7 @@ class Database:
         )
 
     def _build_postgres_url(self) -> str:
-        return settings.db_url()
+        return settings.db_url
 
     async def get_session(self) -> AsyncSession:
         return self.SessionLocal()
