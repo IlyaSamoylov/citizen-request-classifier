@@ -14,8 +14,9 @@ from app.db.healthcheck import check_db
 async def lifespan(app: FastAPI):
 	"""Cоздание таблицы из справочника категорий до запуска"""
 	async with SessionLocal() as session:
-		repo = CategoryRepository(session)
-		await seed_categories(repo)
+		async with session.begin():
+			repo = CategoryRepository(session)
+			await seed_categories(repo)
 
 		count = await check_db(session)
 		print(f"[OK] DB connected, categories loaded: {count}")
