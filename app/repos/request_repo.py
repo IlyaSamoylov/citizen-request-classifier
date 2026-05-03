@@ -1,6 +1,7 @@
-from sqlalchemy import delete, select
+from sqlalchemy import delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+from datetime import datetime, timezone
 
 from app.models.request import Request
 from app.models.request_category import RequestCategory
@@ -48,3 +49,10 @@ class RequestRepository:
             )
         )
         return result.scalar_one_or_none()
+
+    async def mark_updated(self, request_id: int) -> None:
+        await self.session.execute(
+            update(Request)
+            .where(Request.id == request_id)
+            .values(updated_at=datetime.now(timezone.utc))
+        )
