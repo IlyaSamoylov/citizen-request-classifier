@@ -12,6 +12,6 @@ class Clarification(Base):
     step: Mapped[int] = mapped_column(Integer)
     question: Mapped[str] = mapped_column(Text)
     answer: Mapped[str | None] = mapped_column(Text, nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     request = relationship("Request", back_populates="clarifications")
