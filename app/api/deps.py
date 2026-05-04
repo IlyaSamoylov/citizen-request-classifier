@@ -9,6 +9,8 @@ from app.usecases.clarification import ClarificationUseCase
 from app.repos.request_repo import RequestRepository
 from app.repos.category_repo import CategoryRepository
 from app.repos.clarification_repo import ClarificationRepository
+from app.repos.analytics_repo import AnalyticsRepository
+from app.usecases.analytics import AnalyticsUseCase
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
@@ -33,6 +35,12 @@ def get_category_repo(uow: UnitOfWork = Depends(get_uow)) -> CategoryRepository:
 
 def get_clarification_repo(uow: UnitOfWork = Depends(get_uow)) -> ClarificationRepository:
 	return ClarificationRepository(uow.session)
+
+def get_analytics_repo(uow: UnitOfWork = Depends(get_uow)) -> AnalyticsRepository:
+	return AnalyticsRepository(uow.session)
+
+def get_analytics_usecase(analytics_repo: AnalyticsRepository = Depends(get_analytics_repo)) -> AnalyticsUseCase:
+	return AnalyticsUseCase(analytics_repo=analytics_repo)
 
 def get_request_usecase(request_repo: RequestRepository = Depends(get_request_repo),
 						category_repo: CategoryRepository = Depends(get_category_repo),

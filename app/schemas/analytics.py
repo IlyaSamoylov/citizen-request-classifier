@@ -1,8 +1,13 @@
 from pydantic import BaseModel, Field
 
+class AnalyticsCategoryOut(BaseModel):
+	code: str = Field(min_length=1)
+	name: str = Field(min_length=1)
+	requests_count: int = Field(ge=0)
+
+
 class AnalyticsOut(BaseModel):
-	requests_by_category: dict[str, int]
-	toxic_requests_ratio: float
-	k_clarifications: int
-	accuracy: float | None = Field(default=None, ge=0.0, le=1.0)
-	F1: float | None = Field(default=None, ge=0.0, le=1.0)
+	total_requests: int = Field(ge=0)
+	requests_by_cat: list[AnalyticsCategoryOut]
+	toxic_rate: float = Field(ge=0.0, le=1.0)
+	clarification_requests: int = Field(ge=0)
