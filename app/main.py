@@ -3,8 +3,8 @@ from contextlib import asynccontextmanager
 
 from app.db.session import SessionLocal
 from app.usecases.seed import seed_categories
-from app.api.analytics import analytics_router
-from app.api.requests import requests_router
+from app.api.routes_analytics import analytics_router
+from app.api.routes_requests import requests_router
 from app.core.config import settings
 from app.repos.category_repo import CategoryRepository
 from app.api.exc_handlers import app_error_handler

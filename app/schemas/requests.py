@@ -7,12 +7,12 @@ class RequestIn(BaseModel):
     text: str = Field(min_length=1, max_length=500)
 
 class RequestCategoryOut(BaseModel):
-    code: str
-    confidence: float | None = None
+    code: str = Field(min_length=1)
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
 
 class RequestOut(BaseModel):
-    id: int
-    raw_text: str
+    id: int = Field(gt=0)
+    raw_text: str = Field(min_length=1, max_length=500)
     categories: list[RequestCategoryOut]
     is_toxic: bool
     clarification_question: str | None = None
@@ -20,9 +20,9 @@ class RequestOut(BaseModel):
 
 
 class RequestFull(BaseModel):
-    id: int
-    raw_text: str
-    categories: list[RequestCategoryOut]
+    id: int = Field(gt=0)
+    raw_text: str = Field(min_length=1, max_length=500)
+    categories: list[RequestCategoryOut] = Field(min_length=0) #TODO: ТОЛЬКО ПОКА НЕТ БАЗЫ, ПОТОМ min_length=1
     is_toxic: bool
     clarifications: list[ClarificationMessage]
     created_at: datetime

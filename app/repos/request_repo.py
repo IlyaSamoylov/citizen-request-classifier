@@ -17,22 +17,16 @@ class RequestRepository:
         await self.session.flush()
         return obj
 
-    async def replace_categories(
-        self,
-        request_id: int,
-        categories: list[str],
-        confidence_map: dict[str, float] | None = None,
-    ) -> None:
-        await self.session.execute(
-            delete(RequestCategory).where(RequestCategory.request_id == request_id)
-        )
+    async def replace_categories(self, request_id: int, categories: list[str],
+                                 confidence_map: dict[str, float] | None = None):
+
+        await self.session.execute(delete(RequestCategory).where(RequestCategory.request_id == request_id))
 
         objs = []
         for code in categories:
             objs.append(
                 RequestCategory(
-                    request_id=request_id,
-                    category_code=code,
+                    request_id=request_id, category_code=code,
                     confidence=None if not confidence_map else confidence_map.get(code),
                 )
             )

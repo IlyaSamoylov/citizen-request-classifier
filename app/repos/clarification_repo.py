@@ -14,7 +14,7 @@ class ClarificationRepository:
         await self.session.flush()
         return obj
 
-    async def add_answer(self, clarification_id: int, answer: str) -> None:
+    async def add_answer(self, clarification_id: int, answer: str):
         result = await self.session.execute(select(Clarification).where(Clarification.id == clarification_id))
         obj = result.scalar_one_or_none()
         if obj is None:
