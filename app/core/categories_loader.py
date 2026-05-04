@@ -13,7 +13,7 @@ def load_categories() -> list[CategorySeed]:
     with open(path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
-    if not data:
-        raise ValueError(f"Справочник пуст")
+    if not isinstance(data, list) or not data:
+        raise RuntimeError("Справочник пуст или имеет неверный формат")
 
     return [CategorySeed(**item) for item in data]
