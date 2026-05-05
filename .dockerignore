@@ -229,4 +229,13 @@ __marimo__/
 # ненужные файлы проекта
 .python-version
 datasets/
+
 Тестовое задание - Классификация.md
+
+.env
+.venv
+__pycache__
+*.pyc
+.git
+.gitignore
+*.md
