@@ -1,3 +1,4 @@
+import httpx
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
@@ -8,8 +9,7 @@ from app.api.routes_requests import requests_router
 from app.core.config import settings
 from app.repos.category_repo import CategoryRepository
 from app.api.exc_handlers import app_error_handler
-from app.services.classifier import DummyClassifier
-from app.services.toxicity import DummyToxicityDetector
+from app.services.classifier import OpenRouterClassifier
 from app.core.errors import BaseAppException
 
 from app.db.healthcheck import check_db
@@ -25,11 +25,12 @@ async def lifespan(app: FastAPI):
 		count = await check_db(session)
 		print(f"[OK] DB connected, categories loaded: {count}")
 
-	app.state.classifier = DummyClassifier()
-	app.state.toxicity_detector = DummyToxicityDetector()
+	async with httpx.AsyncClient(timeout=httpx.Timeout(settings.LLM_TIMEOUT_SECONDS, connect=5.0),
+	                             limits=httpx.Limits(max_keepalive_connections=5)) as client:
+		app.state.http_client = client
+		app.state.classifier = OpenRouterClassifier(client=client)
 
-	yield
-
+		yield
 
 def create_app() -> FastAPI:
 	"""Функция для создания FastAPI приложения"""

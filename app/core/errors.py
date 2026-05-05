@@ -32,3 +32,13 @@ class PersistenceError(BaseAppException):
 	def __init__(self, detail: str = "Ошибка при попытке сохранить"):
 		self.detail = detail
 		super().__init__(detail)
+
+class ExternalServiceError(BaseAppException):
+	def __init__(self, detail: str = "Ошибка при взаимодействии с внешним сервисом"):
+		self.detail = detail
+		super().__init__(detail)
+
+class EmptyModelResponseError(ExternalServiceError):
+	def __init__(self, detail: str = "Модель вернула пустой content"):
+		self.detail = detail
+		super().__init__(detail)
