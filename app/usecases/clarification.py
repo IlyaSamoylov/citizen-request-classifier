@@ -2,6 +2,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.repos.category_repo import CategoryRepository
 from app.repos.clarification_repo import ClarificationRepository
+from app.services.classifier import ChatMessageDomain
 from app.repos.request_repo import RequestRepository
 from app.core.errors import (
     ClarificationAlreadyAnsweredError,
@@ -35,7 +36,7 @@ class ClarificationUseCase:
         if prediction.needs_clarification:
             await self.clarification_repo.create(
                 request_id=request_id,
-                question=prediction.question or "Уточните, пожалуйста, категорию обращения.",
+                question=prediction.question or "Пожалуйста, уточните или переформулируйте запрос.",
                 step=clarification_step + 1,
             )
             return
@@ -62,8 +63,13 @@ class ClarificationUseCase:
 
             await self.clarification_repo.add_answer(clarification.id, answer)
 
-            text_for_classifier = f"{request.raw_text}\n{answer}"
-            prediction = await self.classifier.predict(text_for_classifier)
+            allowed_codes = await self.category_repo.get_all_codes()
+            messages = [
+                ChatMessageDomain(role="user", content=request.raw_text),
+                ChatMessageDomain(role="assistant", content=clarification.question),
+                ChatMessageDomain(role="user", content=answer)
+            ]
+            prediction = await self.classifier.predict(messages, allowed_codes)
 
             await self._apply_prediction(request_id=request_id, clarification_step=clarification.step,
                                          prediction=prediction)

@@ -22,7 +22,7 @@ class RequestOut(BaseModel):
 class RequestFull(BaseModel):
     id: int = Field(gt=0)
     raw_text: str = Field(min_length=1, max_length=500)
-    categories: list[RequestCategoryOut] = Field(min_length=0) #TODO: ТОЛЬКО ПОКА НЕТ БАЗЫ, ПОТОМ min_length=1
+    categories: list[RequestCategoryOut] = Field(min_length=0)
     is_toxic: bool
     clarifications: list[ClarificationMessage]
     created_at: datetime
