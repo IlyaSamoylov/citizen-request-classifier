@@ -8,7 +8,6 @@
 
 ___
 ## Установка и запуск
-### Вариант1 - Docker
 ### 1 Клонирование репозитория
 ```Bash
 git clone https://github.com/IlyaSamoylov/citizen-request-classifier
@@ -59,23 +58,19 @@ OPENROUTER_APP_NAME=OpenRouter-request-classifier
 LLM_TIMEOUT_SECONDS=30
 LLM_MAX_RETRIES=2
 ```
+### Вариант1 - Docker
 ### 3 Запуск
 ```bash
 docker compose up --build
 ```
 
-## Вариант2 - локально через uv
-### 1. Установка uv
+### Вариант2 - локально через uv
+### 3 Установка uv
 ```bash
 pip install uv
 ```
-### 2. Клонирование проекта
-```bash
-git clone https://github.com/IlyaSamoylov/citizen-request-classifier
-cd llm-p
-```
 
-### 3. Создание и активация виртуального окружения
+### 4 Создание и активация виртуального окружения
 ```bash
 uv venv
 ```
@@ -88,86 +83,9 @@ source .venv/bin/activate
 ```bash
 .venv\Scripts\Activate.ps1
 ```
-### 4 Установка зависимостей
+### 5 Установка зависимостей
 ```bash
 uv sync
-```
-`.env`
-```bash
-APP_NAME=request-classifier
-APP_ENV=local
-
-APP_HOST=0.0.0.0
-APP_PORT=8000
-LOG_LEVEL=INFO
-APP_DEBUG=False
-
-DB_USER=user
-DB_PASSWORD=password
-DB_HOST=db
-DB_PORT=5432
-DB_NAME=app_db
-
-CATEGORIES_FILE=app/core/categories.yaml
-
-OPENROUTER_API_KEY=your-api-key-here
-OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-OPENROUTER_MODEL=openrouter/free
-OPENROUTER_SITE_URL=https://example.com
-OPENROUTER_APP_NAME=OpenRouter-request-classifier
-
-LLM_TIMEOUT_SECONDS=30
-LLM_MAX_RETRIES=2
-```
-
-### 4. Установка зависимостей
-```bash
-uv sync
-```
-
-### 5 Переменные среды
-Скопируйте .env.example в .env в корне проекта
-
-### Linux
-```bash
-cp .env.example .env
-```
-
-### Windows
-```bash
-Copy-Item .env.example .env
-```
-Заполните .env:
-- Сгенерируйте свой API ключ на платформе [OpenRouter](https://openrouter.ai/) и установите в `OPENROUTER_API_KEY`:
-- Заполните  `OPENROUTER_MODEL`. Ссылку на бесплатную модель можно взять [здесь](https://openrouter.ai/models?fmt=cards&max_price=0&order=newest&output_modalities=text)
-или использовать openrouter/free, тогда OpenRouter сам подберет бесплатную модель
-- Заполните DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME данными локальной базы
-
-```bash
-APP_NAME=request-classifier
-APP_ENV=local
-
-APP_HOST=0.0.0.0
-APP_PORT=8000
-LOG_LEVEL=INFO
-APP_DEBUG=False
-
-DB_USER=user
-DB_PASSWORD=password
-DB_HOST=db
-DB_PORT=5432
-DB_NAME=app_db
-
-CATEGORIES_FILE=app/core/categories.yaml
-
-OPENROUTER_API_KEY=your-api-key-here
-OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
-OPENROUTER_MODEL=openrouter/free
-OPENROUTER_SITE_URL=https://example.com
-OPENROUTER_APP_NAME=OpenRouter-request-classifier
-
-LLM_TIMEOUT_SECONDS=30
-LLM_MAX_RETRIES=2
 ```
 
 ### 6 Запуск
@@ -197,6 +115,7 @@ citizen-request-classifier/
 │   ├── env.py
 │   ├── README.py
 │   ├── script.py.mako
+│
 ├── app/
 │   ├── __init__.py
 │   ├── main.py                    # Точка входа FastAPI
@@ -246,10 +165,6 @@ citizen-request-classifier/
 │   │
 │   ├── services/                  # Внешние сервисы
 │   │   ├── __init__.py
-│   │   └── openrouter_client.py   # Клиент OpenRouter / LLM
-│   │
-│   ├── usecases/                  # Бизнес-логика приложения
-│   │   ├── __init__.py
 │   │   ├── classifier.py       # Классификатор
 │   │   ├── dataclasses.py      # Датаклассы обращения и предсказания
 │   │   └── utils.py            # Схема и промпт
@@ -260,6 +175,6 @@ citizen-request-classifier/
 │   │   ├── clarification.py   # Уточнения
 │   │   ├── common.py          # Сборка результата
 │   │   ├── request.py         # Запросы
-└── └── seed.py            # Заполнение справочник
+└── └── └── seed.py            # Заполнение справочника
 
 ```
